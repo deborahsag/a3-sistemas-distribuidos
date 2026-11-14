@@ -27,3 +27,34 @@ def criar_nova_ideia(ideia: IdeiaBase):
 def consultar_ideias():
     ideias = listar_ideias()
     return ideias
+
+@app.get("/ideias/{ideia_id}", response_model=IdeiaResponse)
+def consultar_ideia_por_id(ideia_id: str):
+    ideia = buscar_ideia(ideia_id)
+    if not ideia:
+        # Código 404 (Not Found)
+        raise HTTPException(status_code=404, detail="Ideia não encontrada.")
+    return ideia
+
+
+@app.put("/ideias/{ideia_id}", response_model=IdeiaResponse, status_code=200)
+def atualizar_ideia(ideia_id: str, atualizacao: Modificaveis):
+    ideia = buscar_ideia(ideia_id)
+    if not ideia:
+        # Código 404 (Not Found)
+        raise HTTPException(status_code=404, detail="Ideia não encontrada.")
+    try:
+        return modificar_ideia(ideia_id, atualizacao)
+    except Exception as e:
+        # Código 500 (Internal Server Error)
+        raise HTTPException(status_code=500, detail=f"Erro interno: {str(e)}")
+
+
+@app.delete("/ideias/{ideia_id}", status_code=200)
+def deletar_ideia(ideia_id: str):
+    ideia = buscar_ideia(ideia_id)
+    if not ideia:
+        # Código 404 (Not Found)
+        raise HTTPException(status_code=404, detail="Ideia não encontrada.")
+    excluir_ideia(ideia_id)
+    return {"mensagem": "Ideia removida com sucesso."}

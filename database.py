@@ -2,7 +2,7 @@ import firebase_admin
 from firebase_admin import firestore, credentials
 from datetime import datetime
 
-from models import IdeiaBase, IdeiaResponse
+from models import *
 
 
 # Inicializar Firebase Admin SDK
@@ -32,3 +32,28 @@ def listar_ideias():
     docs =  ideias_ref.stream()
     ideias = [IdeiaResponse(**doc.to_dict(), id=doc.id) for doc in docs]
     return ideias
+
+def buscar_ideia(ideia_id: str):
+    db = conectar_banco()
+    doc = db.collection('Ideias').document(ideia_id).get()
+    if doc.exists:
+        return IdeiaResponse(**doc.to_dict(), id=doc.id)
+    else:
+        return None
+
+
+# Modificação de registros
+def modificar_ideia(ideia_id: str, atualizacao: Modificaveis):
+    db = conectar_banco()
+    doc_ref = db.collection('Ideias').document(ideia_id)
+    dados_atualizacao = atualizacao.model_dump(exclude_unset=True)
+    doc_ref.update(dados_atualizacao)
+    ideia_atualizada = doc_ref.get().to_dict()
+    return IdeiaResponse(**ideia_atualizada, id=ideia_id)
+
+
+# Exclusão de registros
+def excluir_ideia(ideia_id: str):
+    db = conectar_banco()
+    doc_ref = db.collection('Ideias').document(ideia_id)
+    doc_ref.delete()
