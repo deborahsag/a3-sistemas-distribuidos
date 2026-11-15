@@ -28,3 +28,7 @@ Qual é a melhor maneira de desacoplar a camada de banco de dados da camada de m
 2. Lógica de negócio
 
 Qual é a melhor maneira de garantir que certos dados (exemplo: timestamp) nunca sejam alterados?
+
+3. Segurança/execução do trabalho
+
+O Firebase precisa de uma chave privada para acessar o banco de dados, e não é aconselhável que chaves sejam colocadas em repositórios públicos. Como vamos fazer nesse trabalho?
