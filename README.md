@@ -32,3 +32,7 @@ Qual é a melhor maneira de garantir que certos dados (exemplo: timestamp) nunca
 3. Segurança/execução do trabalho
 
 O Firebase precisa de uma chave privada para acessar o banco de dados, e não é aconselhável que chaves sejam colocadas em repositórios públicos. Como vamos fazer nesse trabalho?
+
+4. Rotas
+
+As funções das rotas devem ser definidas como assíncronas (async)?
