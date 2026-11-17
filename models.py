@@ -9,6 +9,7 @@ class IdeiaResponse(IdeiaBase):
     id: str
     timestamp: str
     arquivada: bool
+    projetoId: str | None = None
 
 class Modificaveis(BaseModel):
     titulo: str | None = None
