@@ -19,9 +19,9 @@ def conectar_banco():
 def criar_registro(tabela: str, registro: dict):
     db = conectar_banco()
     timestamp = datetime.now(timezone.utc).isoformat()
-    arquivada = False
-    doc_ref = db.collection(tabela).add({**registro, "timestamp": timestamp, "arquivada": arquivada})
-    return doc_ref[1].id, timestamp, arquivada
+    arquivado = False
+    doc_ref = db.collection(tabela).add({**registro, "timestamp": timestamp, "arquivado": arquivado})
+    return doc_ref[1].id, timestamp, arquivado
 
 
 # Consulta de registros

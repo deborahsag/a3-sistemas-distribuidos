@@ -27,8 +27,8 @@ def criar_nova_ideia(ideia: IdeiaBase):
     if not ideia.descricao.strip():
         raise HTTPException(status_code=400, detail="A descrição não pode estar em branco.")
     try:
-        novo_id, timestamp, arquivada = criar_registro("ideias", ideia.model_dump())
-        return {**ideia.model_dump(), "id": novo_id, "timestamp": timestamp, "arquivada": arquivada}
+        novo_id, timestamp, arquivado = criar_registro("ideias", ideia.model_dump())
+        return {**ideia.model_dump(), "id": novo_id, "timestamp": timestamp, "arquivado": arquivado}
     except Exception as e:
         # Código 500 (Internal Server Error)
         raise HTTPException(status_code=500, detail=f"Erro interno no banco de dados: {str(e)}")

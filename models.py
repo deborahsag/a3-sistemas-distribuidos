@@ -8,5 +8,5 @@ class IdeiaBase(BaseModel):
 class IdeiaResponse(IdeiaBase):
     id: str
     timestamp: str
-    arquivada: bool
+    arquivado: bool
     projetoId: str | None = None
