@@ -1,6 +1,9 @@
+# TODO: Refatorar para as funções manipularem dicionários em vez dos modelos Pydantic.
+# TODO: Guardar o timestamp já formatado para exibição?
+# TODO: Mudar o nome Modificaveis para IdeiaEdicao?
 import firebase_admin
 from firebase_admin import firestore, credentials
-from datetime import datetime
+from datetime import datetime, timezone
 
 from models import *
 
@@ -8,7 +11,7 @@ from models import *
 # Inicializar Firebase Admin SDK
 def inicializar_banco():
     cred = credentials.Certificate(
-        "/home/debor/projetos/a3-2026-2/chave-privada/a3-202602-capsula-firebase-adminsdk-fbsvc-5dac698542.json")
+        "/home/debor/projetos/a3-2026-2/a3-sistemas-distribuidos/chave-privada/a3-202602-capsula-firebase-adminsdk-fbsvc-5dac698542.json")
     firebase_admin.initialize_app(cred)
 
 def conectar_banco():
@@ -19,7 +22,7 @@ def conectar_banco():
 # Criação de registros
 def registrar_ideia(ideia: IdeiaBase):
     db = conectar_banco()
-    timestamp = datetime.now().isoformat()
+    timestamp = datetime.now(timezone.utc).isoformat()
     arquivada = False
     doc_ref = db.collection('Ideias').add({**ideia.model_dump(), "timestamp": timestamp, "arquivada": arquivada})
     return doc_ref[1].id, timestamp, arquivada

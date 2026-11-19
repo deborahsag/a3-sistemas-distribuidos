@@ -1,4 +1,5 @@
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 
 from database import *
 from models import *
@@ -8,6 +9,16 @@ inicializar_banco()
 
 # Criar instância do FastAPI
 app = FastAPI()
+
+
+# Conexão com o front-end
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:8080"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 @app.post("/ideias", response_model=IdeiaResponse, status_code=201)
