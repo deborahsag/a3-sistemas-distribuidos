@@ -21,11 +21,11 @@ def conectar_banco():
 
 
 # Criação de registros
-def registrar_ideia(ideia: IdeiaBase):
+def registrar_ideia(**ideia):
     db = conectar_banco()
     timestamp = datetime.now(timezone.utc).isoformat()
     arquivada = False
-    doc_ref = db.collection('Ideias').add({**ideia.model_dump(), "timestamp": timestamp, "arquivada": arquivada})
+    doc_ref = db.collection('Ideias').add({**ideia, "timestamp": timestamp, "arquivada": arquivada})
     return doc_ref[1].id, timestamp, arquivada
 
 
@@ -34,14 +34,14 @@ def listar_ideias():
     db = conectar_banco()
     ideias_ref = db.collection('Ideias')
     docs =  ideias_ref.stream()
-    ideias = [IdeiaResponse(**doc.to_dict(), id=doc.id) for doc in docs]
+    ideias = [{**doc.to_dict(), 'id': doc.id} for doc in docs]
     return ideias
 
 def buscar_ideia(ideia_id: str):
     db = conectar_banco()
     doc = db.collection('Ideias').document(ideia_id).get()
     if doc.exists:
-        return IdeiaResponse(**doc.to_dict(), id=doc.id)
+        return {**doc.to_dict(), 'id': doc.id}
     else:
         return None
 
