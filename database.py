@@ -1,5 +1,4 @@
 # TODO: Refatorar para as funções manipularem dicionários em vez dos modelos Pydantic.
-# TODO: Guardar o timestamp já formatado para exibição?
 # TODO: Mudar o nome Modificaveis para IdeiaEdicao?
 import firebase_admin
 from firebase_admin import firestore, credentials
@@ -8,10 +7,12 @@ from datetime import datetime, timezone
 from models import *
 
 
+# Chave privada de acesso ao Firebase Firestore
+CHAVE_PRIVADA = "./chave-privada/a3-202602-capsula-firebase-adminsdk-fbsvc-5dac698542.json"
+
 # Inicializar Firebase Admin SDK
 def inicializar_banco():
-    cred = credentials.Certificate(
-        "/home/debor/projetos/a3-2026-2/a3-sistemas-distribuidos/chave-privada/a3-202602-capsula-firebase-adminsdk-fbsvc-5dac698542.json")
+    cred = credentials.Certificate(CHAVE_PRIVADA)
     firebase_admin.initialize_app(cred)
 
 def conectar_banco():
