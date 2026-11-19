@@ -21,7 +21,7 @@ def conectar_banco():
 
 
 # Criação de registros
-def registrar_ideia(**ideia):
+def registrar_ideia(ideia: dict):
     db = conectar_banco()
     timestamp = datetime.now(timezone.utc).isoformat()
     arquivada = False
