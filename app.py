@@ -27,7 +27,7 @@ def criar_nova_ideia(ideia: IdeiaBase):
     if not ideia.descricao.strip():
         raise HTTPException(status_code=400, detail="A descrição não pode estar em branco.")
     try:
-        novo_id, timestamp, arquivada = registrar_ideia(ideia.model_dump())
+        novo_id, timestamp, arquivada = criar_registro("ideias", ideia.model_dump())
         return {**ideia.model_dump(), "id": novo_id, "timestamp": timestamp, "arquivada": arquivada}
     except Exception as e:
         # Código 500 (Internal Server Error)
@@ -36,13 +36,13 @@ def criar_nova_ideia(ideia: IdeiaBase):
 
 @app.get("/ideias", response_model=list[IdeiaResponse], status_code=200)
 def consultar_ideias():
-    dict_ideias = listar_ideias()
+    dict_ideias = listar_registros("ideias")
     ideias = [IdeiaResponse(**ideia) for ideia in dict_ideias]
     return ideias
 
 @app.get("/ideias/{ideia_id}", response_model=IdeiaResponse)
 def consultar_ideia_por_id(ideia_id: str):
-    dict_ideia = buscar_ideia(ideia_id)
+    dict_ideia = buscar_registro_por_id("ideias", ideia_id)
     if not dict_ideia:
         # Código 404 (Not Found)
         raise HTTPException(status_code=404, detail="Ideia não encontrada.")
@@ -52,12 +52,12 @@ def consultar_ideia_por_id(ideia_id: str):
 
 @app.put("/ideias/{ideia_id}", response_model=IdeiaResponse, status_code=200)
 def atualizar_ideia(ideia_id: str, atualizacao: dict):
-    ideia = buscar_ideia(ideia_id)
+    ideia = buscar_registro_por_id("ideias", ideia_id)
     if not ideia:
         # Código 404 (Not Found)
         raise HTTPException(status_code=404, detail="Ideia não encontrada.")
     try:
-        dict_ideia = modificar_ideia(ideia_id, atualizacao)
+        dict_ideia = modificar_registro("ideias", ideia_id, atualizacao)
         return IdeiaResponse(**dict_ideia)
     except Exception as e:
         # Código 500 (Internal Server Error)
@@ -66,9 +66,9 @@ def atualizar_ideia(ideia_id: str, atualizacao: dict):
 
 @app.delete("/ideias/{ideia_id}", status_code=200)
 def deletar_ideia(ideia_id: str):
-    ideia = buscar_ideia(ideia_id)
+    ideia = buscar_registro_por_id("ideias", ideia_id)
     if not ideia:
         # Código 404 (Not Found)
         raise HTTPException(status_code=404, detail="Ideia não encontrada.")
-    excluir_ideia(ideia_id)
+    excluir_registro("ideias", ideia_id)
     return {"mensagem": "Ideia removida com sucesso."}
