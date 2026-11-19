@@ -43,15 +43,15 @@ def consultar_ideias():
 @app.get("/ideias/{ideia_id}", response_model=IdeiaResponse)
 def consultar_ideia_por_id(ideia_id: str):
     dict_ideia = buscar_ideia(ideia_id)
-    ideia = IdeiaResponse(**dict_ideia)
-    if not ideia:
+    if not dict_ideia:
         # Código 404 (Not Found)
         raise HTTPException(status_code=404, detail="Ideia não encontrada.")
+    ideia = IdeiaResponse(**dict_ideia)
     return ideia
 
 
 @app.put("/ideias/{ideia_id}", response_model=IdeiaResponse, status_code=200)
-def atualizar_ideia(ideia_id: str, atualizacao: Modificaveis):
+def atualizar_ideia(ideia_id: str, atualizacao: dict):
     ideia = buscar_ideia(ideia_id)
     if not ideia:
         # Código 404 (Not Found)

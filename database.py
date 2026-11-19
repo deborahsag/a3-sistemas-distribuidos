@@ -47,10 +47,10 @@ def buscar_ideia(ideia_id: str):
 
 
 # Modificação de registros
-def modificar_ideia(ideia_id: str, atualizacao: Modificaveis):
+def modificar_ideia(ideia_id: str, atualizacao: dict):
     db = conectar_banco()
     doc_ref = db.collection('Ideias').document(ideia_id)
-    dados_atualizacao = atualizacao.model_dump(exclude_unset=True)
+    dados_atualizacao = atualizacao
     doc_ref.update(dados_atualizacao)
     ideia_atualizada = doc_ref.get().to_dict()
     return IdeiaResponse(**ideia_atualizada, id=ideia_id)
