@@ -10,3 +10,9 @@ class IdeiaResponse(IdeiaBase):
     timestamp: str
     arquivado: bool
     projetoId: str | None = None
+
+class IdeiaEdicao(BaseModel):
+    titulo: str | None = None
+    notificacao: int | None = None
+    arquivado: bool | None = None
+    projetoId: str | None = None

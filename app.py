@@ -2,7 +2,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 
 from database import *
-from models import IdeiaBase, IdeiaResponse
+from models import IdeiaBase, IdeiaResponse, IdeiaEdicao
 
 # Inicializar banco de dados
 inicializar_banco()
@@ -51,13 +51,14 @@ def consultar_ideia_por_id(ideia_id: str):
 
 
 @app.put("/ideias/{ideia_id}", response_model=IdeiaResponse, status_code=200)
-def atualizar_ideia(ideia_id: str, atualizacao: dict):
+def atualizar_ideia(ideia_id: str, atualizacao: IdeiaEdicao):
     ideia = buscar_registro_por_id("ideias", ideia_id)
     if not ideia:
         # Código 404 (Not Found)
         raise HTTPException(status_code=404, detail="Ideia não encontrada.")
     try:
-        dict_ideia = modificar_registro("ideias", ideia_id, atualizacao)
+        dados_atualizacao = atualizacao.model_dump(exclude_unset=True)
+        dict_ideia = modificar_registro("ideias", ideia_id, dados_atualizacao)
         return IdeiaResponse(**dict_ideia)
     except Exception as e:
         # Código 500 (Internal Server Error)
