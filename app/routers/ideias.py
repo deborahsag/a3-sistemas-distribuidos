@@ -1,27 +1,14 @@
-from fastapi import FastAPI, HTTPException
-from fastapi.middleware.cors import CORSMiddleware
+from fastapi import APIRouter, HTTPException
 
-from database import *
-from models import IdeiaBase, IdeiaResponse, IdeiaEdicao
+from ..database.database import *
+from ..schemas.ideia import IdeiaBase, IdeiaResponse, IdeiaEdicao
 
-# Inicializar banco de dados
-inicializar_banco()
-
-# Criar instância do FastAPI
-app = FastAPI()
-
-
-# Conexão com o front-end
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["http://localhost:8080"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+router = APIRouter(
+    prefix='/ideias',
+    tags=["ideias"],
 )
 
-
-@app.post("/ideias", response_model=IdeiaResponse, status_code=201)
+@router.post("/", response_model=IdeiaResponse, status_code=201)
 def criar_nova_ideia(ideia: IdeiaBase):
     # Código 400 (Bad Request) para regra de negócio inválida
     if not ideia.descricao.strip():
@@ -34,13 +21,13 @@ def criar_nova_ideia(ideia: IdeiaBase):
         raise HTTPException(status_code=500, detail=f"Erro interno no banco de dados: {str(e)}")
 
 
-@app.get("/ideias", response_model=list[IdeiaResponse], status_code=200)
+@router.get("/", response_model=list[IdeiaResponse], status_code=200)
 def consultar_ideias():
     dict_ideias = listar_registros("ideias")
     ideias = [IdeiaResponse(**ideia) for ideia in dict_ideias]
     return ideias
 
-@app.get("/ideias/{ideia_id}", response_model=IdeiaResponse)
+@router.get("/{ideia_id}", response_model=IdeiaResponse)
 def consultar_ideia_por_id(ideia_id: str):
     dict_ideia = buscar_registro_por_id("ideias", ideia_id)
     if not dict_ideia:
@@ -50,7 +37,7 @@ def consultar_ideia_por_id(ideia_id: str):
     return ideia
 
 
-@app.put("/ideias/{ideia_id}", response_model=IdeiaResponse, status_code=200)
+@router.put("/{ideia_id}", response_model=IdeiaResponse, status_code=200)
 def atualizar_ideia(ideia_id: str, atualizacao: IdeiaEdicao):
     ideia = buscar_registro_por_id("ideias", ideia_id)
     if not ideia:
@@ -65,7 +52,7 @@ def atualizar_ideia(ideia_id: str, atualizacao: IdeiaEdicao):
         raise HTTPException(status_code=500, detail=f"Erro interno: {str(e)}")
 
 
-@app.delete("/ideias/{ideia_id}", status_code=200)
+@router.delete("/{ideia_id}", status_code=200)
 def deletar_ideia(ideia_id: str):
     ideia = buscar_registro_por_id("ideias", ideia_id)
     if not ideia:

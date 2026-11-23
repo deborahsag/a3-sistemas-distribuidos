@@ -1,18 +1,18 @@
 import firebase_admin
 from firebase_admin import firestore, credentials
-from datetime import datetime, timezone
 
-# Chave privada de acesso ao Firebase Firestore
-CHAVE_PRIVADA = "./chave-privada/a3-202602-capsula-firebase-adminsdk-fbsvc-5dac698542.json"
+from ..config import settings
+
+from datetime import datetime, timezone
 
 # Inicializar Firebase Admin SDK
 def inicializar_banco():
-    cred = credentials.Certificate(CHAVE_PRIVADA)
-    firebase_admin.initialize_app(cred)
+    if not firebase_admin._apps:
+        cred = credentials.Certificate(settings.firebase_credentials)
+        firebase_admin.initialize_app(cred)
 
 def conectar_banco():
-    db = firestore.client()
-    return db
+    return firestore.client()
 
 
 # Criação de registros
