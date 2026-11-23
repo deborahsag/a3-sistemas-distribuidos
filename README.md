@@ -17,22 +17,3 @@ DELETE: Remove uma ideia do registro.
 
 ## Tecnologias
 A API será desenvolvida em FastAPI com banco de dados Firebase.
-
-## Dúvidas para o professor
-1. Desacoplamento
-
-Qual é a melhor maneira de desacoplar a camada de banco de dados da camada de modelos?
-
-É vantajoso tentar fazer funções genéricas que funcionem para qualquer modelo e qualquer tabela do banco de dados?
-
-2. Lógica de negócio
-
-Qual é a melhor maneira de garantir que certos dados (exemplo: timestamp) nunca sejam alterados?
-
-3. Segurança/execução do trabalho
-
-O Firebase precisa de uma chave privada para acessar o banco de dados, e não é aconselhável que chaves sejam colocadas em repositórios públicos. Como vamos fazer nesse trabalho?
-
-4. Rotas
-
-As funções das rotas devem ser definidas como assíncronas (async)?
