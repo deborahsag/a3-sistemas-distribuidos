@@ -28,7 +28,7 @@ def criar_registro(tabela: str, registro: dict):
 def listar_registros(tabela: str):
     db = conectar_banco()
     doc_ref = db.collection(tabela)
-    docs =  doc_ref.stream()
+    docs =  doc_ref.order_by('timestamp').stream()
     registros = [{**doc.to_dict(), 'id': doc.id} for doc in docs]
     return registros
 
