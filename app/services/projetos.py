@@ -2,16 +2,21 @@ from ..schemas.projeto import ProjetoBase, ProjetoResponse
 from ..database.database import *
 
 def criar_projeto(projeto: ProjetoBase):
-    novo_id, timestamp, arquivado = criar_registro("projetos", projeto.model_dump())
     ideia_original = buscar_registro_por_id("ideias", projeto.ideiaOriginalId)
-    projeto_novo = {
+    dados_projeto = {
         **projeto.model_dump(),
-        "id": novo_id,
-        "timestamp": timestamp,
-        "arquivado": arquivado,
         "ideiaOriginalTitulo": ideia_original["titulo"],
         "ideiaOriginalDescricao": ideia_original["descricao"],
         "ideiaOriginalTimestamp": ideia_original["timestamp"],
+    }
+
+    novo_id, timestamp, arquivado = criar_registro("projetos", dados_projeto)
+
+    projeto_novo = {
+        **dados_projeto,
+        "id": novo_id,
+        "timestamp": timestamp,
+        "arquivado": arquivado,
     }
     return ProjetoResponse(**projeto_novo)
 
