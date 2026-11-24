@@ -12,6 +12,9 @@ def criar_projeto(projeto: ProjetoBase):
 
     novo_id, timestamp, arquivado = criar_registro("projetos", dados_projeto)
 
+    atualizacao = {"projetoId": novo_id}
+    ideia_atualizada = modificar_registro("ideias", projeto.ideiaOriginalId, atualizacao)
+
     projeto_novo = {
         **dados_projeto,
         "id": novo_id,
