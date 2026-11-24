@@ -1,4 +1,4 @@
-from ..schemas.projeto import ProjetoBase, ProjetoResponse
+from ..schemas.projeto import ProjetoBase, ProjetoResponse, ProjetoEdicao
 from ..database.database import *
 
 def criar_projeto(projeto: ProjetoBase):
@@ -33,3 +33,15 @@ def buscar_projeto_por_id(projeto_id: str):
     if not dict_projeto:
         return None
     return ProjetoResponse(**dict_projeto)
+
+def modificar_projeto(projeto_id: str, atualizacao: ProjetoEdicao):
+    dados_atualizacao = atualizacao.model_dump(exclude_unset=True)
+    dict_projeto = modificar_registro("projetos", projeto_id, dados_atualizacao)
+    return ProjetoResponse(**dict_projeto)
+
+def excluir_projeto(projeto_id: str):
+    atualizacao_ideia = {"projetoId": ""}
+    dados_projeto = buscar_registro_por_id("projetos", projeto_id)
+    modificar_registro("ideias", dados_projeto["ideiaOriginalId"], atualizacao_ideia)
+
+    excluir_registro("projetos", projeto_id)

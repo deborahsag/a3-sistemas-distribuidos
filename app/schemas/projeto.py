@@ -39,3 +39,9 @@ class ProjetoResponse(ProjetoBase):
     ideiaOriginalTitulo: str
     ideiaOriginalDescricao: str
     ideiaOriginalTimestamp: str
+
+class ProjetoEdicao(BaseModel):
+    titulo: str | None = None
+    notificacao: int | None = None
+    arquivado: bool | None = None
+    camposProjeto: list[CampoProjetoUnion] | None = None
