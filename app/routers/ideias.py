@@ -1,9 +1,9 @@
 from fastapi import APIRouter, HTTPException
 
-from app.services.ideias import *
+from ..services.ideias import *
 
 router = APIRouter(
-    prefix='/ideias',
+    prefix="/ideias",
     tags=["ideias"],
 )
 
@@ -23,7 +23,7 @@ def criar_nova_ideia(ideia: IdeiaBase):
 def consultar_ideias():
     return listar_ideias()
 
-@router.get("/{ideia_id}", response_model=IdeiaResponse)
+@router.get("/{ideia_id}", response_model=IdeiaResponse, status_code=200)
 def consultar_ideia_por_id(ideia_id: str):
     ideia = buscar_ideia_por_id(ideia_id)
     if not ideia:

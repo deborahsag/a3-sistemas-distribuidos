@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from .database.database import inicializar_banco
-from .routers import ideias
+from .routers import ideias, projetos
 
 from .config import settings
 
@@ -14,6 +14,7 @@ app = FastAPI()
 
 # Rotas de Ideias
 app.include_router(ideias.router)
+app.include_router(projetos.router)
 
 
 # Conexão com o front-end

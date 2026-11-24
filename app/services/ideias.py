@@ -1,5 +1,5 @@
-from app.schemas.ideia import IdeiaBase, IdeiaResponse, IdeiaEdicao
-from app.database.database import *
+from ..schemas.ideia import IdeiaBase, IdeiaResponse, IdeiaEdicao
+from ..database.database import *
 
 def criar_ideia(ideia: IdeiaBase):
     novo_id, timestamp, arquivado = criar_registro("ideias", ideia.model_dump())
