@@ -40,7 +40,7 @@ def modificar_projeto(projeto_id: str, atualizacao: ProjetoEdicao):
     return ProjetoResponse(**dict_projeto)
 
 def excluir_projeto(projeto_id: str):
-    atualizacao_ideia = {"projetoId": ""}
+    atualizacao_ideia = {"projetoId": None}
     dados_projeto = buscar_registro_por_id("projetos", projeto_id)
     modificar_registro("ideias", dados_projeto["ideiaOriginalId"], atualizacao_ideia)
 
